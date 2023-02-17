@@ -1,12 +1,14 @@
 class ShortUrlsController < ApplicationController
   before_action :authorize_request, except: :show
-  before_action :find_short_url, only: %i[show create destroy]
+  before_action :find_short_url, only: :destroy
 
   def index
-    render json: current_user.short_urls
+    render json: current_user.short_urls.active
   end
 
   def show
+    @short_url = ShortUrl.active.find_by_slug(params[:slug])
+
     redirect_to @short_url.url, allow_other_host: true
   end
 
@@ -29,10 +31,10 @@ class ShortUrlsController < ApplicationController
   private
 
   def find_short_url
-    @short_url = ShortUrl.find_by_slug(params[:slug])
+    @short_url = ShortUrl.find(params[:id])
   end
 
   def urls_params
-    params.require(:short_url).permit(:url, :slug)
+    params.require(:short_url).permit(:url, :slug, :expired_at)
   end
 end

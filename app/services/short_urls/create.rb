@@ -1,17 +1,15 @@
 module ShortUrls
   class Create
 
-    attr_reader :short_url_params, :user, :url
+    attr_reader :params, :user, :url
 
     def initialize(params, user)
-      @short_url_params = params
+      @params = params
       @user = user
     end
 
     def call
-      @url = ShortUrl.new(short_url_params)
-      @url.slug = ShortUrl.generate_slug if is_not_custom_slug?
-      @url.user = user
+      @url = ShortUrl.new(short_urls_params)
 
       @url.save
     end
@@ -22,8 +20,17 @@ module ShortUrls
 
     private
 
+    def short_urls_params
+      {
+        slug: is_not_custom_slug? ? ShortUrl.generate_slug : params[:slug],
+        url: params[:url],
+        expired_at: params[:expired_at] || Time.now + ShortUrl::DEFAULT_TIME_EXPIRATION,
+        user_id: user.id
+      }
+    end
+
     def is_not_custom_slug?
-      short_url_params[:slug].blank?
+      params[:slug].blank?
     end
   end
 end
