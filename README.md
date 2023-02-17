@@ -22,3 +22,8 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+# .ENV
+
+JSON_WEB_TOKEN_SECRET_KEY=secret_key
