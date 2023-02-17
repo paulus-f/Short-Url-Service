@@ -1,29 +1,93 @@
-# README
+# API Documentation
+Auth token from login stores at `Authorization` header
+```
+'Authorization': "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NzY3NTYyMjZ9.GISV1RJZBw_RaY_yqAP3bGuU8HL28vB-6f6PvATdG8w"
+```
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Login
 
-Things you may want to cover:
+POST - `/auth/login`
 
-* Ruby version
+Request body:
+```JSON
+{
+    "email": "user1@user.com",
+    "password": "qwerty123"
+}
+```
 
-* System dependencies
+Response:
+```JSON
+{
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NzY3NTYyMjZ9.GISV1RJZBw_RaY_yqAP3bGuU8HL28vB-6f6PvATdG8w",
+    "exp": "02-18-2023 23:37",
+    "user_id": 1,
+    "email": "user1@user.com"
+}
+```
 
-* Configuration
+## Short Urls
 
-* Database creation
+### Use short url
 
-* Database initialization
+GET - `/shortify/:slug`
 
-* How to run the test suite
+### Create Short Url List
 
-* Services (job queues, cache servers, search engines, etc.)
+POST - `/short_urls`
 
-* Deployment instructions
+Request body:
+```JSON
+{
+    "slug": null,
+    "url": "https://www.otodom.pl/pl/oferty/sprzedaz/mieszkanie/warszawa?distanceRadius=0&market=ALL&priceMax=500000&areaMin=35&locations=%5Bcities_6-26%5D&viewType=listing&lang=pl",
+    "expired_at": "2024-10-19T21:26:42.699Z"
+}
+```
 
-* ...
+Response:
+```JSON
+{
+    "id": 9,
+    "slug": "VRD8ldVTTX",
+    "url": "https://www.otodom.pl/pl/oferty/sprzedaz/mieszkanie/warszawa?distanceRadius=0&market=ALL&priceMax=500000&areaMin=35&locations=%5Bcities_6-26%5D&viewType=listing&lang=pl",
+    "user_id": 1,
+    "created_at": "2024-10-19T21:26:42.699Z",
+    "updated_at": "2023-02-17T21:37:51.773Z",
+    "expired_at": "2022-10-19T21:26:42.699Z"
+}
+```
 
+### Active Short Url List
 
+GET - `/short_urls`
+
+Request body: There is not
+
+Response:
+```JSON
+[
+    {
+        "id": 7,
+        "slug": "lol123545",
+        "url": "https://www.otodom.pl/pl/oferty/sprzedaz/mieszkanie/warszawa?distanceRadius=0&market=ALL&priceMax=500000",
+        "user_id": 1,
+        "created_at": "2023-02-17T21:29:26.029Z",
+        "updated_at": "2023-02-17T21:29:26.029Z",
+        "expired_at": "2023-03-19T21:29:25.994Z"
+    },
+    {
+        "id": 8,
+        "slug": "newtest",
+        "url": "https://www.otodom.pl/pl/oferty/sprzedaz/mieszkanie/warszawa",
+        "user_id": 1,
+        "created_at": "2023-02-17T21:29:36.791Z",
+        "updated_at": "2023-02-17T21:29:36.791Z",
+        "expired_at": "2023-10-19T21:26:42.699Z"
+    }
+]
+```
 # .ENV
-
+```
 JSON_WEB_TOKEN_SECRET_KEY=secret_key
+```
