@@ -9,7 +9,11 @@ class ShortUrlsController < ApplicationController
   def show
     @short_url = ShortUrl.active.find_by_slug(params[:slug])
 
-    redirect_to @short_url.url, allow_other_host: true
+    if @short_url
+      redirect_to @short_url.url, allow_other_host: true
+    else
+      render json: { errors: 'The url is not active' }, status: 400
+    end
   end
 
   def create
