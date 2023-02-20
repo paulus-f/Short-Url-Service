@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_17_211502) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_19_225928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "short_url_metrics", force: :cascade do |t|
+    t.json "body"
+    t.bigint "short_url_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["short_url_id"], name: "index_short_url_metrics_on_short_url_id"
+  end
 
   create_table "short_urls", force: :cascade do |t|
     t.string "slug"
@@ -31,5 +39,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_211502) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "short_url_metrics", "short_urls"
   add_foreign_key "short_urls", "users"
 end

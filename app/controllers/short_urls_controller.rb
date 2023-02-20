@@ -7,10 +7,10 @@ class ShortUrlsController < ApplicationController
   end
 
   def show
-    @short_url = ShortUrl.active.find_by_slug(params[:slug])
+    service = ShortUrls::ShowUrl.new(metric_params, params[:slug])
 
-    if @short_url
-      redirect_to @short_url.url, allow_other_host: true
+    if service.call
+      redirect_to service.url, allow_other_host: true
     else
       render json: { errors: 'The url is not active' }, status: 400
     end
@@ -40,5 +40,18 @@ class ShortUrlsController < ApplicationController
 
   def urls_params
     params.require(:short_url).permit(:url, :slug, :expired_at)
+  end
+
+  def metric_params
+    user_agent = UserAgent.parse(request.user_agent)
+
+    {
+      browser: user_agent.browser,
+      os: user_agent.os,
+      version: user_agent.version,
+      platform: user_agent.platform,
+      mobile: user_agent.mobile?,
+      remote_ip: request.remote_ip
+    }
   end
 end

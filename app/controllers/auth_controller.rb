@@ -25,8 +25,8 @@ class AuthController < ApplicationController
     time = Time.now + 24.hours
 
     {
-      token: token,
-      exp: time.strftime("%m-%d-%Y %H:%M"),
+      token:,
+      exp: time.strftime('%m-%d-%Y %H:%M'),
       user_id: @user.id,
       email: @user.email
     }

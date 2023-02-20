@@ -41,7 +41,7 @@ class UsersController < ApplicationController
   end
 
   def collection
-    @users ||= User.all
+    @collection ||= User.all
   end
 
   def user_params

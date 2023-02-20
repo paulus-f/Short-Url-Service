@@ -11,9 +11,9 @@ class ApplicationController < ActionController::API
   end
 
   def authorize_request
-    if decoded_token[:exp] < Time.now.to_i
-      render json: { errors: 'Token has expired' }, status: :unauthorized
-    end
+    return unless decoded_token[:exp] < Time.now.to_i
+
+    render json: { errors: 'Token has expired' }, status: :unauthorized
   end
 
   private
@@ -28,13 +28,11 @@ class ApplicationController < ActionController::API
   def extract_token_from_header
     header = request.headers['Authorization']
 
-    header.split(' ').last if header
+    header&.split(' ')&.last
   end
 
   def current_user
-    if @decoded_token.nil?
-      render json: { errors: 'User is unauthorized' }, status: :unauthorized
-    end
+    render json: { errors: 'User is unauthorized' }, status: :unauthorized if @decoded_token.nil?
 
     @current_user ||= User.find(@decoded_token[:user_id])
   end
