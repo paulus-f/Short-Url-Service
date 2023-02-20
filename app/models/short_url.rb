@@ -27,4 +27,23 @@ class ShortUrl < ApplicationRecord
   validates :url, length: { minimum: MIN_URL_LENGTH, too_long: '%<count>s characters is the minimum allowed' }
 
   scope :active, -> { where('expired_at > ?', Time.now) }
+  scope :most_viewed, lambda { |n = 5|
+    select('short_urls.*, COUNT(short_url_metrics.id) AS views')
+      .joins(:short_url_metrics)
+      .group('short_urls.id')
+      .order('views DESC')
+      .limit(n)
+  }
+
+  def metric_view
+    {
+      url: url,
+      slug: slug,
+      view: views
+    }
+  end
+
+  def views
+    short_url_metrics.count
+  end
 end
