@@ -87,6 +87,63 @@ Response:
     }
 ]
 ```
+## Metrics
+
+### Most viewed
+
+GET - `/metrics`
+
+Request body: There is not
+
+Response:
+```JSON
+[
+    {
+        "url": "https://www.otodom.pl/pl/oferty/sprzedaz/mieszkanie/warszawa",
+        "slug": "sF44QVY5qH",
+        "view": 6
+    },
+    {
+        "url": "https://www.otodom.pl/pl/oferty/sprzedaz/mieszkanie",
+        "slug": "7kgqZE6dus",
+        "view": 1
+    }
+]
+```
+
+### View `ShortUrl` metadata
+
+GET - `/metrics/7kgqZE6dus`
+
+Request body: There is not
+
+Response:
+```JSON
+{
+    "url": "https://www.otodom.pl/pl/oferty/sprzedaz/mieszkanie/warszawa?distanceRadius=0&market=ALL&priceMax=500000&areaMin=35&locations=%5Bcities_6-26%5D&viewType=listing",
+    "slug": "7kgqZE6dus",
+    "view": 1,
+    "metadata": [
+        {
+            "browser": "Firefox",
+            "os": "OS X 10.15",
+            "version": {
+                "str": "110.0",
+                "nil": false,
+                "sequences": [
+                    110,
+                    0
+                ],
+                "comparable": true
+            },
+            "platform": "Macintosh",
+            "mobile": false,
+            "remote_ip": "127.0.0.1"
+        }
+    ]
+}
+```
+
 # .ENV
 ```
 JSON_WEB_TOKEN_SECRET_KEY=secret_key
